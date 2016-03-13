@@ -1,0 +1,153 @@
+{
+    "id": "net.weejewel.hyperion",
+    "name": {
+        "en": "Hyperion"
+    },
+    "version": "1.0.0",
+    "compatibility": "*",
+    "category": "lights",
+    "description": {
+	    "en": "Control Hyperion, your DIY Ambilight, from Homey.",
+	    "nl": "Bestuur Hyperion, je Doe-het-zelf Ambilight, vanaf Homey."
+    },
+    "author": {
+        "name": "Emile Nijssen",
+        "email": "emile@athom.nl"
+    },
+    "images": {
+	    "large": "./assets/images/large.jpg",
+	    "small": "./assets/images/small.jpg"
+    },
+    "drivers": [
+	    {
+		    "id": "hyperion",
+		    "class": "other",
+		    "capabilities": [],
+		    "name": {
+			    "en": "Hyperion"
+		    },
+		    "images": {
+			    "large": "./drivers/hyperion/assets/images/large.jpg",
+			    "small": "./drivers/hyperion/assets/images/small.jpg"
+		    },
+		    "pair": [
+			    {
+				    "id": "enter_address_and_pair"
+			    }
+		    ],
+		    "settings": [
+			    {
+                    "type": "group",
+                    "label": {
+                        "en": "Server settings"
+                    },
+                    "children": [
+		                {
+		                    "id": "address",
+		                    "type": "text",
+		                    "label": {
+		                        "en": "Address",
+		                        "nl": "Adres"
+		                    }
+		                },
+		                {
+			                "id": "port",
+			                "type": "number",
+			                "label": {
+				                "en": "Port",
+				                "nl": "Poort"
+			                },
+			                "min": 0,
+			                "max": 65535,
+			                "step": 1
+		                },
+		                {
+			                "id": "priority",
+			                "type": "number",
+			                "label": {
+				                "en": "Priority",
+				                "nl": "Prioriteit"
+			                },
+			                "hint": {
+				                "en": "A lower number is higher priority. The highest priority client has control.",
+				                "nl": "Een lager getal is hogere prioriteit. De client met de hoogste prioriteit heeft de controle."
+			                },
+			                "min": 0,
+			                "max": 255,
+			                "step": 1,
+			                "value": 1
+		                }
+		            ]
+		        }
+		    ]
+	    }
+    ],
+    "flow": {
+	    "actions": [
+		    {
+			    "id": "effect",
+			    "title": {
+				    "en": "Show an Effect",
+				    "nl": "Laat een Effect zien"
+			    },
+			    "args": [
+				    {
+					    "name": "device",
+					    "type": "device",
+					    "filter": "driver_id=hyperion"
+				    },
+				    {
+					    "name": "effect",
+					    "type": "autocomplete"
+				    }
+			    ]
+		    },
+		    {
+			    "id": "color",
+			    "title": {
+				    "en": "Show a color",
+				    "nl": "Laat een kleur zien"
+			    },
+			    "args": [
+				    {
+					    "name": "device",
+					    "type": "device",
+					    "filter": "driver_id=hyperion"
+				    },
+				    {
+					    "name": "color",
+					    "type": "color"
+				    }
+			    ]
+		    },
+		    {
+			    "id": "clear",
+			    "title": {
+				    "en": "Clear",
+				    "nl": "Wissen"
+			    },
+			    "args": [
+				    {
+					    "name": "device",
+					    "type": "device",
+					    "filter": "driver_id=hyperion"
+				    }
+			    ]
+		    },
+		    {
+			    "id": "clearall",
+			    "title": {
+				    "en": "Clear all",
+				    "nl": "Alles Wissen"
+			    },
+			    "args": [
+				    {
+					    "name": "device",
+					    "type": "device",
+					    "filter": "driver_id=hyperion"
+				    }
+			    ]
+		    }
+	    ]
+    }
+}
