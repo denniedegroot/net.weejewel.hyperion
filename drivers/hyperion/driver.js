@@ -15,7 +15,7 @@ self.init = function( devices_data, callback ){
 		var device = getDeviceByData( args.device );
 		if( device instanceof Error ) return callback( device );
 		
-		device.hyperion.setEffect( args.effect.name, {}, function( err, result ){
+		device.hyperion.setEffect( args.effect.name, args.effect.args, function( err, result ){
 			if( err ) return callback( err );
 			return callback( null, result.success );
 		});
@@ -37,7 +37,8 @@ self.init = function( devices_data, callback ){
 				if( effect.name.toLowerCase().indexOf( args.query.toLowerCase() ) < 0 ) return;
 				
 				effects.push({
-					name: effect.name
+					name: effect.name,
+					args: effect.args
 				});
 			});
 						
@@ -124,7 +125,6 @@ self.pair = function( socket ) {
 }
 
 self.settings = function( device_data, newSettingsObj, oldSettingsObj, changedKeysArr, callback ) {
-	Homey.log('settings', arguments)
 	
 	// validate if this connection works
 	var hyperion = new Hyperion( newSettingsObj.address, newSettingsObj.port, newSettingsObj.priority );
@@ -139,7 +139,6 @@ self.settings = function( device_data, newSettingsObj, oldSettingsObj, changedKe
 }
 
 self.deleted = function( device_data, callback ) {
-	Homey.log('deleted', arguments);
 		
 	var device = getDeviceByData( device_data );
 	if( device instanceof Error ) return callback( device );
@@ -172,10 +171,30 @@ function initDevice( device_data ) {
 		
 		device.hyperion.on('disconnect', function(){
 			Homey.log('onDisconnect', device_data.id);
-			self.setUnavailable( device_data, "Not connected" );			
+			self.setUnavailable( device_data, "Offline" );
+			
+			// try again every 10s
+			setTimeout(function(){
+				initDevice( device_data );
+			}, 10000);		
 		})
 		
-		self.setUnavailable( device_data, "Not connected" );
+		var initialConnect = true;
+		device.hyperion.on('error', function(err){
+			Homey.error('onError', err);
+			
+			if( initialConnect ) {
+				initialConnect = false;
+			
+				// try again every 10s
+				setTimeout(function(){
+					initDevice( device_data );
+				}, 10000);
+			}
+			
+		})
+		
+		self.setUnavailable( device_data, "Offline" );
 	});
 }
 
