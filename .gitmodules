@@ -1,0 +1,3 @@
+[submodule "node_modules/hyperion-client"]
+	path = node_modules/hyperion-client
+	url = https://WeeJeWel@github.com/WeeJeWel/node-hyperion-client
