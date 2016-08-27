@@ -18,11 +18,189 @@
 	    "large": "./assets/images/large.jpg",
 	    "small": "./assets/images/small.jpg"
     },
+    "capabilities": {
+	    "hyperion_effect": {
+		    "type": "enum",
+		    "title": {
+			    "en": "Effect"
+		    },
+		    "getable": true,
+		    "setable": true,
+		    "values": [
+			    {
+				    "id": "none",
+				    "title": {
+					    "en": "No effect"
+				    }
+			    },
+			    {
+				    "id": "Knight rider",
+				    "title": {
+					    "en": "Knight rider"
+				    }
+			    },
+			    {
+				    "id": "Blue mood blobs",
+				    "title": {
+					    "en": "Blue mood blobs"
+				    }
+			    },
+			    {
+				    "id": "Cold mood blobs",
+				    "title": {
+					    "en": "Cold mood blobs"
+				    }
+			    },
+			    {
+				    "id": "Full color mood blobs",
+				    "title": {
+					    "en": "Full color mood blobs"
+				    }
+			    },
+			    {
+				    "id": "Green mood blobs",
+				    "title": {
+					    "en": "Green mood blobs"
+				    }
+			    },
+			    {
+				    "id": "Red mood blobs",
+				    "title": {
+					    "en": "Red mood blobs"
+				    }
+			    },
+			    {
+				    "id": "Warm mood blobs",
+				    "title": {
+					    "en": "Warm mood blobs"
+				    }
+			    },
+			    {
+				    "id": "Police Lights Single",
+				    "title": {
+					    "en": "Police Lights Single"
+				    }
+			    },
+			    {
+				    "id": "Police Lights Solid",
+				    "title": {
+					    "en": "Police Lights Solid"
+				    }
+			    },
+			    {
+				    "id": "Rainbow mood",
+				    "title": {
+					    "en": "Rainbow mood"
+				    }
+			    },
+			    {
+				    "id": "Rainbow swirl",
+				    "title": {
+					    "en": "Rainbow swirl"
+				    }
+			    },
+			    {
+				    "id": "Rainbow swirl fast",
+				    "title": {
+					    "en": "Rainbow swirl fast"
+				    }
+			    },
+			    {
+				    "id": "Running dots",
+				    "title": {
+					    "en": "Running dots"
+				    }
+			    },
+			    {
+				    "id": "Random",
+				    "title": {
+					    "en": "Random"
+				    }
+			    },
+			    {
+				    "id": "System Shutdown",
+				    "title": {
+					    "en": "System Shutdown"
+				    }
+			    },
+			    {
+				    "id": "Snake",
+				    "title": {
+					    "en": "Snake"
+				    }
+			    },
+			    {
+				    "id": "Sparks Color",
+				    "title": {
+					    "en": "Sparks Color"
+				    }
+			    },
+			    {
+				    "id": "Sparks",
+				    "title": {
+					    "en": "Sparks"
+				    }
+			    },
+			    {
+				    "id": "Strobe blue",
+				    "title": {
+					    "en": "Strobe blue"
+				    }
+			    },
+			    {
+				    "id": "Strobe Raspbmc",
+				    "title": {
+					    "en": "Strobe Raspbmc"
+				    }
+			    },
+			    {
+				    "id": "Strobe white",
+				    "title": {
+					    "en": "Strobe white"
+				    }
+			    },
+			    {
+				    "id": "Color traces",
+				    "title": {
+					    "en": "Color traces"
+				    }
+			    },
+			    {
+				    "id": "UDP listener",
+				    "title": {
+					    "en": "UDP listener"
+				    }
+			    },
+			    {
+				    "id": "X-Mas",
+				    "title": {
+					    "en": "X-Mas"
+				    }
+			    }
+		    ]
+	    }
+    },
     "drivers": [
 	    {
 		    "id": "hyperion",
 		    "class": "other",
-		    "capabilities": [],
+		    "capabilities": [ "onoff", "light_hue", "light_saturation", "hyperion_effect" ],
+		    "mobile": {
+			    "components": [
+				    {
+					    "id": "icon",
+					    "capabilities": [ "onoff" ]
+				    },
+				    {
+					    "id": "picker",
+					    "capabilities": [ "hyperion_effect" ]
+				    },
+				    {
+					    "id": "color",
+					    "capabilities": [ "light_hue", "light_saturation" ]
+				    }
+			    ]
+		    },
 		    "name": {
 			    "en": "Hyperion"
 		    },
@@ -45,6 +223,7 @@
 		                {
 		                    "id": "address",
 		                    "type": "text",
+		                    "value": "",
 		                    "label": {
 		                        "en": "Address",
 		                        "nl": "Adres"
@@ -53,6 +232,7 @@
 		                {
 			                "id": "port",
 			                "type": "number",
+			                "value": 19444,
 			                "label": {
 				                "en": "Port",
 				                "nl": "Poort"
