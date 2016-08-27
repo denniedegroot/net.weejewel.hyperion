@@ -11,13 +11,9 @@ self.init = function( devices_data, callback ){
 	devices_data.forEach(initDevice);
 
 	Homey.manager('flow').on('action.effect', function( callback, args ){
-
-		var device = getDeviceByData( args.device );
-		if( device instanceof Error ) return callback( device );
-
-		device.hyperion.setEffect( args.effect.name, args.effect.args, function( err, result ){
+		self.capabilities.hyperion_effect.set( args.device, args.effect.name, function( err, result ){
 			if( err ) return callback( err );
-			return callback( null, result.success );
+			return callback( null, true );
 		});
 	});
 
@@ -32,8 +28,7 @@ self.init = function( devices_data, callback ){
 			if( effect.name.toLowerCase().indexOf( args.query.toLowerCase() ) < 0 ) return;
 
 			effects.push({
-				name: effect.name,
-				args: effect.args
+				name: effect.name
 			});
 		});
 
@@ -45,11 +40,19 @@ self.init = function( devices_data, callback ){
 		var device = getDeviceByData( args.device );
 		if( device instanceof Error ) return callback( device );
 
-		var color = hexToRgb(args.color);
-			color = [ color.r, color.g, color.b ];
+		var colorRgb = hexToRgb(args.color);
 
-		device.hyperion.setColor( color, function( err, result ){
+		device.hyperion.setColor([ colorRgb.r, colorRgb.g, colorRgb.b ], function( err, result ){
 			if( err ) return callback( err );
+
+			var colorHsv = rgb2hsv( colorRgb.r, colorRgb.g, colorRgb.b );
+
+			device.state['light_hue'] = colorHsv.h / 360;
+			self.realtime( args.device, 'light_hue', device.state['light_hue']);
+
+			device.state['light_saturation'] = colorHsv.s / 100;
+			self.realtime( args.device, 'light_saturation', device.state['light_saturation']);
+
 			return callback( null, result.success );
 		});
 	});
@@ -164,6 +167,7 @@ self.capabilities.hyperion_effect.set = function( device_data, value, callback )
 			if( err ) return callback( err );
 
 			device.state['hyperion_effect'] = value;
+			self.realtime( device_data, 'hyperion_effect', device.state['hyperion_effect']);
 			return callback( null, device.state['hyperion_effect'] );
 		});
 
@@ -176,6 +180,7 @@ self.capabilities.hyperion_effect.set = function( device_data, value, callback )
 			device.hyperion.setEffect( effect.name, effect.args, function( err, result ){
 				if( err ) return callback( err );
 				device.state['hyperion_effect'] = value;
+				self.realtime( device_data, 'hyperion_effect', device.state['hyperion_effect']);
 				return callback( null, device.state['hyperion_effect'] );
 			});
 		});
@@ -365,4 +370,44 @@ function HSVtoRGB (hsv) {
         case 5: r = v, g = p, b = q;  break;
     }
     return [Math.floor(r*255), Math.floor(g*255), Math.floor(b*255)];
+}
+
+function rgb2hsv () {
+    var rr, gg, bb,
+        r = arguments[0] / 255,
+        g = arguments[1] / 255,
+        b = arguments[2] / 255,
+        h, s,
+        v = Math.max(r, g, b),
+        diff = v - Math.min(r, g, b),
+        diffc = function(c){
+            return (v - c) / 6 / diff + 1 / 2;
+        };
+
+    if (diff == 0) {
+        h = s = 0;
+    } else {
+        s = diff / v;
+        rr = diffc(r);
+        gg = diffc(g);
+        bb = diffc(b);
+
+        if (r === v) {
+            h = bb - gg;
+        }else if (g === v) {
+            h = (1 / 3) + rr - bb;
+        }else if (b === v) {
+            h = (2 / 3) + gg - rr;
+        }
+        if (h < 0) {
+            h += 1;
+        }else if (h > 1) {
+            h -= 1;
+        }
+    }
+    return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        v: Math.round(v * 100)
+    };
 }
