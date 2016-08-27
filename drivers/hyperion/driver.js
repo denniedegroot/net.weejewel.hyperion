@@ -281,7 +281,6 @@ function initDevice( device_data ) {
 				}, 10000);
 
 				device.serverInfo = result;
-				console.log('device.serverInfo', device.serverInfo)
 
 				self.setAvailable( device_data );
 
