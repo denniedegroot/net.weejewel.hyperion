@@ -17,15 +17,15 @@ self.init = function( devices_data, callback ){
 		});
 	});
 
-	Homey.manager('flow').on('action.effect.effect.autocomplete', function( callback, args ){
+	Homey.manager('flow').on('action.effect.effect.autocomplete', function( callback, data ){
 
-		var device = getDeviceByData( args.device );
+		var device = getDeviceByData( data.args.device );
 		if( device instanceof Error ) return callback( device );
 
 		var effects = [];
 		device.serverInfo.info.effects.forEach(function(effect){
 
-			if( effect.name.toLowerCase().indexOf( args.query.toLowerCase() ) < 0 ) return;
+			if( effect.name.toLowerCase().indexOf( data.query.toLowerCase() ) < 0 ) return;
 
 			effects.push({
 				name: effect.name
