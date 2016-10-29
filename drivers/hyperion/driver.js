@@ -172,18 +172,24 @@ self.capabilities.hyperion_effect.set = function( device_data, value, callback )
 		});
 
 	} else {
+		
+		if( device.serverInfo
+		 && device.serverInfo.info
+		 && device.serverInfo.info.effects ) {
+			device.serverInfo.info.effects.forEach(function(effect){
 
-		device.serverInfo.info.effects.forEach(function(effect){
+				if( effect.name.toLowerCase() !== value.toLowerCase() ) return;
 
-			if( effect.name.toLowerCase() !== value.toLowerCase() ) return;
-
-			device.hyperion.setEffect( effect.name, effect.args, function( err, result ){
-				if( err ) return callback( err );
-				device.state['hyperion_effect'] = value;
-				self.realtime( device_data, 'hyperion_effect', device.state['hyperion_effect']);
-				return callback( null, device.state['hyperion_effect'] );
+				device.hyperion.setEffect( effect.name, effect.args, function( err, result ){
+					if( err ) return callback( err );
+					device.state['hyperion_effect'] = value;
+					self.realtime( device_data, 'hyperion_effect', device.state['hyperion_effect']);
+					return callback( null, device.state['hyperion_effect'] );
+				});
 			});
-		});
+		} else {
+			return callback( new Error('device_offline') );
+		}		
 
 	}
 
