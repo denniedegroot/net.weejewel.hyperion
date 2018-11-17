@@ -111,6 +111,25 @@ self.capabilities.onoff.set = function( device_data, value, callback ) {
 	}
 
 }
+self.capabilities.dim = {};
+self.capabilities.dim.get = function( device_data, callback ) {
+	var device = getDeviceByData( device_data );
+	if( device instanceof Error ) return callback( device );
+
+	return callback( null, device.state['dim'] );
+}
+self.capabilities.dim.set = function( device_data, value, callback ) {
+	var device = getDeviceByData( device_data );
+	if( device instanceof Error ) return callback( device );
+
+	var color = HSVtoRGB([ device.state['light_hue'] * 360, device.state['light_saturation'] * 100, value * 100 ]);
+	device.hyperion.setColor( color, function( err, result ){
+		if( err ) return callback( err );
+
+		device.state['dim'] = value;
+		return callback( null, device.state['dim'] );
+	});
+}
 self.capabilities.light_hue = {};
 self.capabilities.light_hue.get = function( device_data, callback ) {
 	var device = getDeviceByData( device_data );
@@ -122,7 +141,7 @@ self.capabilities.light_hue.set = function( device_data, value, callback ) {
 	var device = getDeviceByData( device_data );
 	if( device instanceof Error ) return callback( device );
 
-	var color = HSVtoRGB([ value*360, device.state['light_saturation'] * 100, 100 ]);
+	var color = HSVtoRGB([ value*360, device.state['light_saturation'] * 100, device.state['dim'] * 100 ]);
 	device.hyperion.setColor( color, function( err, result ){
 		if( err ) return callback( err );
 
@@ -141,12 +160,12 @@ self.capabilities.light_saturation.set = function( device_data, value, callback 
 	var device = getDeviceByData( device_data );
 	if( device instanceof Error ) return callback( device );
 
-	var color = HSVtoRGB([ device.state['light_hue'] * 360, value * 100, 100 ]);
+	var color = HSVtoRGB([ device.state['light_hue'] * 360, value * 100, device.state['dim'] * 100 ]);
 	device.hyperion.setColor( color, function( err, result ){
 		if( err ) return callback( err );
 
 		device.state['light_saturation'] = value;
-		return callback( null, device.state['light_hue'] );
+		return callback( null, device.state['light_saturation'] );
 	});
 }
 self.capabilities.hyperion_effect = {};
@@ -162,7 +181,7 @@ self.capabilities.hyperion_effect.set = function( device_data, value, callback )
 
 	if( value === 'none' ) {
 
-		var color = HSVtoRGB([ device.state['light_hue'] * 360, device.state['light_saturation'] * 100, 100 ]);
+		var color = HSVtoRGB([ device.state['light_hue'] * 360, device.state['light_saturation'] * 100, device.state['dim'] * 100 ]);
 		device.hyperion.setColor( color, function( err, result ){
 			if( err ) return callback( err );
 

@@ -184,7 +184,7 @@
 	    {
 		    "id": "hyperion",
 		    "class": "other",
-		    "capabilities": [ "onoff", "light_hue", "light_saturation", "hyperion_effect" ],
+		    "capabilities": [ "onoff", "dim", "light_hue", "light_saturation", "hyperion_effect" ],
 		    "mobile": {
 			    "components": [
 				    {
