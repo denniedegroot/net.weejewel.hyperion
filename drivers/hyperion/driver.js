@@ -95,7 +95,8 @@ self.capabilities.onoff.set = function( device_data, value, callback ) {
 	if( device instanceof Error ) return callback( device );
 
 	if( value === true ) {
-		device.hyperion.setColor( [ 255, 255, 255 ], function( err, result ){
+		var color = HSVtoRGB([ device.state['light_hue'] * 360, device.state['light_saturation'] * 100, device.state['dim'] * 100 ]);
+		device.hyperion.setColor( color, function( err, result ){
 			if( err ) return callback( err );
 
 			device.state['onoff'] = value;
