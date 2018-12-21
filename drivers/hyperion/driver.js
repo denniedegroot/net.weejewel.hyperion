@@ -19,7 +19,7 @@ self.init = function( devices_data, callback ){
 
 	Homey.manager('flow').on('action.effect.effect.autocomplete', function( callback, data ){
 
-		var device = getDeviceByData( data.args.device );
+		var device = getDeviceByData( data.args.device.data );
 		if( device instanceof Error ) return callback( device );
 
 		var effects = [];
