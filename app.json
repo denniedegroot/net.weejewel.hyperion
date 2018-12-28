@@ -3,7 +3,7 @@
     "name": {
         "en": "Hyperion"
     },
-    "version": "2.0.2",
+    "version": "2.1.0",
     "compatibility": "*",
     "category": "lights",
     "description": {
@@ -13,6 +13,13 @@
     "author": {
         "name": "Emile Nijssen",
         "email": "emile@athom.nl"
+    },
+    "contributors": {
+        "developers": [{
+            "name": "Dennie de Groot",
+            "email": "mail@denniedegroot.nl",
+            "website": "https://denniedegroot.nl"
+        }]
     },
     "images": {
 	    "large": "./assets/images/large.jpg",
