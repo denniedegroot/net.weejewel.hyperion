@@ -3,22 +3,23 @@
     "name": {
         "en": "Hyperion"
     },
-    "version": "2.1.0",
-    "compatibility": "*",
+    "version": "2.2.0",
+    "compatibility": ">=4.0.0",
+    "sdk": 2,
     "category": "lights",
     "description": {
 	    "en": "Control Hyperion, your DIY Ambilight, from Homey.",
 	    "nl": "Bestuur Hyperion, je Doe-het-zelf Ambilight, vanaf Homey."
     },
     "author": {
-        "name": "Emile Nijssen",
-        "email": "emile@athom.nl"
+        "name": "Dennie de Groot",
+        "email": "mail@denniedegroot.nl",
+        "website": "https://denniedegroot.nl"
     },
     "contributors": {
         "developers": [{
-            "name": "Dennie de Groot",
-            "email": "mail@denniedegroot.nl",
-            "website": "https://denniedegroot.nl"
+            "name": "Emile Nijssen",
+            "email": "emile@athom.nl"
         }]
     },
     "images": {
@@ -286,24 +287,6 @@
 				    {
 					    "name": "effect",
 					    "type": "autocomplete"
-				    }
-			    ]
-		    },
-		    {
-			    "id": "color",
-			    "title": {
-				    "en": "Show a color",
-				    "nl": "Laat een kleur zien"
-			    },
-			    "args": [
-				    {
-					    "name": "device",
-					    "type": "device",
-					    "filter": "driver_id=hyperion"
-				    },
-				    {
-					    "name": "color",
-					    "type": "color"
 				    }
 			    ]
 		    },
