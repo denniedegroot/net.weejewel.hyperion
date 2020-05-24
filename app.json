@@ -4,7 +4,7 @@
         "en": "Hyperion"
     },
     "version": "2.2.0",
-    "compatibility": ">=4.0.0",
+    "compatibility": ">=3.2.0",
     "sdk": 2,
     "category": "lights",
     "description": {
@@ -22,6 +22,10 @@
             "email": "emile@athom.nl"
         }]
     },
+    "bugs": {
+        "url": "https://github.com/denniedegroot/net.weejewel.hyperion/issues"
+    },
+    "source": "https://github.com/denniedegroot/net.weejewel.hyperion",
     "images": {
 	    "large": "./assets/images/large.jpg",
 	    "small": "./assets/images/small.jpg"
